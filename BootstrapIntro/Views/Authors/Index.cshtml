@@ -26,6 +26,10 @@
             <td data-bind="text: FirstName"></td>
             <td data-bind="text: LastName"></td>
             <td>
+                <!--This is a great example of
+                mixing Razor with Knockout. The UrlHelper is used to generate the link to Authors/
+                Edit and then the author ID is appended to the end of the link from the Knockout
+                binding.-->
                 <a data-bind="attr: { href: '@Url.Action("Details")/' + Id }"
                    class="btn btn-info">Details</a>
                 <a data-bind="attr: { href: '@Url.Action("Edit")/' + Id }"
@@ -36,6 +40,7 @@
         </tr>
     </tbody>
 </table>
+@Html.BuildNextPreviousLinks(queryOptions, "Index")
 
 @section Scripts {
     <script>
