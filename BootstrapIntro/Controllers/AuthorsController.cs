@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using BootstrapIntro.DAL;
 using BootstrapIntro.Models;
+using BootstrapIntro.ViewModels;
 using System.Web.ModelBinding;
 
 namespace BootstrapIntro.Controllers
@@ -30,7 +31,11 @@ namespace BootstrapIntro.Controllers
                 (int)Math.Ceiling((double)db.Authors.Count() / queryOptions.PageSize);
 
             ViewBag.QueryOptions = queryOptions;
-            return View(authors.ToList());
+
+            AutoMapper.Mapper.CreateMap<Author, AuthorViewModel>();
+
+            return View(AutoMapper.Mapper.Map<List<Author>,
+                        List<AuthorViewModel>>(authors.ToList()));
         }
 
         // GET: Authors/Details/5
@@ -51,7 +56,7 @@ namespace BootstrapIntro.Controllers
         // GET: Authors/Create
         public ActionResult Create()
         {
-            return View("Form", new Author());
+            return View("Form", new AuthorViewModel());
         }
 
         // POST: Authors/Create
@@ -59,11 +64,13 @@ namespace BootstrapIntro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Biography")] Author author)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Biography")]
+                                    AuthorViewModel author)
         {
             if (ModelState.IsValid)
             {
-                db.Authors.Add(author);
+                AutoMapper.Mapper.CreateMap<AuthorViewModel, Author>();
+                db.Authors.Add(AutoMapper.Mapper.Map<AuthorViewModel, Author>(author));
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -78,13 +85,16 @@ namespace BootstrapIntro.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Author author = db.Authors.Find(id);
+
             if (author == null)
             {
                 return HttpNotFound();
             }
 
-            return View("Form", author);
+            AutoMapper.Mapper.CreateMap<Author, AuthorViewModel>();
+            return View("Form", AutoMapper.Mapper.Map<Author, AuthorViewModel>(author));
         }
 
         // POST: Authors/Edit/5
@@ -92,14 +102,17 @@ namespace BootstrapIntro.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Biography")] Author author)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Biography")]
+        AuthorViewModel author)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(author).State = EntityState.Modified;
+                AutoMapper.Mapper.CreateMap<AuthorViewModel, Author>();
+                db.Entry(AutoMapper.Mapper.Map<AuthorViewModel, Author>(author)).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             return View(author);
         }
 
@@ -110,12 +123,16 @@ namespace BootstrapIntro.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Author author = db.Authors.Find(id);
+
             if (author == null)
             {
                 return HttpNotFound();
             }
-            return View(author);
+
+            AutoMapper.Mapper.CreateMap<Author, AuthorViewModel>();
+            return View(AutoMapper.Mapper.Map<Author, AuthorViewModel>(author));
         }
 
         // POST: Authors/Delete/5

@@ -1,4 +1,4 @@
-﻿using BootstrapIntro.Models;
+﻿using BootstrapIntro.ViewModels;
 using Newtonsoft.Json;
 using System.Web;
 using System.Web.Mvc;

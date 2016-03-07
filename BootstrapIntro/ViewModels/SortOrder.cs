@@ -1,4 +1,4 @@
-﻿namespace BootstrapIntro.Models
+﻿namespace BootstrapIntro.ViewModels
 {
     public enum SortOrder
     {
