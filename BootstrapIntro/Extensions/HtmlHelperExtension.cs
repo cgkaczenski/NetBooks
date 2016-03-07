@@ -58,7 +58,7 @@ public static class HtmlHelperExtensions
     private static string BuildNextLink(
     UrlHelper urlHelper, QueryOptions queryOptions, string actionName)
     {
-        return string.Format(
+        string href = string.Format(
         "<a href=\"{0}\">Next <span aria-hidden=\"true\">&rarr;</span></a>",
         urlHelper.Action(actionName, new
         {
@@ -67,6 +67,13 @@ public static class HtmlHelperExtensions
             CurrentPage = queryOptions.CurrentPage + 1,
             PageSize = queryOptions.PageSize
         }));
+
+        if (IsNextDisabled(queryOptions) == "disabled")
+        {
+            return "<a>Next <span aria-hidden=\"true\">&rarr;</span></a>";
+        }
+
+        return href;
     }
 
     public static HtmlString HtmlConvertToJson(this HtmlHelper htmlHelper,
