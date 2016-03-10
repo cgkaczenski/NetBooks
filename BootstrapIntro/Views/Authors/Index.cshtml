@@ -1,29 +1,25 @@
 ﻿@using BootstrapIntro.ViewModels
-@model IEnumerable<AuthorViewModel>
+@model ResultList<AuthorViewModel>
 
 @{
     ViewBag.Title = "Authors";
-    var queryOptions = (QueryOptions)ViewBag.QueryOptions;
+    var queryOptions = Model.QueryOptions;
 }
 
 <h2>Authors</h2>
 
 <p>@Html.ActionLink("Create New", "Create")</p>
 
-<div style="display:none" data-bind="visible: authors.length > 0">
+<div style="display:none" data-bind="visible: pagingService.entities().length > 0">
     <table class="table table-bordered table-striped">
         <thead>
           <tr>
-            <th>@Html.BuildSortableLink("First Name", "Index", "firstName"
-        , queryOptions)
-            </th>
-            <th>@Html.BuildSortableLink("Last Name", "Index", "lastName"
-        , queryOptions)
-            </th>
+            <th>@Html.BuildKnockoutSortableLink("First Name", "Index", "firstName")</th>
+            <th>@Html.BuildKnockoutSortableLink("Last Name", "Index", "lastName")</th>
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody data-bind="foreach: authors">
+        <tbody data-bind="foreach: pagingService.entities">
             <tr>
                 <td data-bind="text: firstName"></td>
                 <td data-bind="text: lastName"></td>
@@ -45,10 +41,10 @@
         </tbody>
     </table>
 
-@Html.BuildNextPreviousLinks(queryOptions, "Index")
+@Html.BuildKnockoutNextPreviousLinks("Index")
 </div>
 
-<div style="display: none" data-bind="visible: authors.length == 0"
+<div style="display: none" data-bind="visible: pagingService.entities().length == 0"
      class="alert alert-warning alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert">
         <span aria-hidden="true">&times;</span>
@@ -59,7 +55,8 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("/Scripts/ViewModels/AuthorIndexViewModel.js")
+    @Scripts.Render("/Scripts/Services/PagingService.js",
+    "/Scripts/ViewModels/AuthorIndexViewModel.js")
     <script>
         var viewModel = new AuthorIndexViewModel(@Html.HtmlConvertToJson(Model));
         ko.applyBindings(viewModel);

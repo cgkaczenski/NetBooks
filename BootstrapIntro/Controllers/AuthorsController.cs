@@ -23,19 +23,22 @@ namespace BootstrapIntro.Controllers
         {
             var start = (queryOptions.CurrentPage - 1) * queryOptions.PageSize; 
 
-            var authors = db.Authors.OrderBy(queryOptions.Sort)
+            var authors = db.Authors
+                .OrderBy(queryOptions.Sort)
                 .Skip(start)
                 .Take(queryOptions.PageSize);
 
             queryOptions.TotalPages =
                 (int)Math.Ceiling((double)db.Authors.Count() / queryOptions.PageSize);
 
-            ViewBag.QueryOptions = queryOptions;
-
             AutoMapper.Mapper.CreateMap<Author, AuthorViewModel>();
 
-            return View(AutoMapper.Mapper.Map<List<Author>,
-                        List<AuthorViewModel>>(authors.ToList()));
+            return View(new ResultList<AuthorViewModel>
+            {
+                QueryOptions = queryOptions,
+                Results = AutoMapper.Mapper.Map<List<Author>,
+                                List<AuthorViewModel>>(authors.ToList())
+            });
         }
 
         // GET: Authors/Details/5

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 public static class HtmlHelperExtensions
 {
@@ -117,5 +118,38 @@ public static class HtmlHelperExtensions
         }
         return string.Format("<span class=\"{0} {1}{2}\"></span>",
         "glyphicon", "glyphicon-", sortIcon);
+    }
+
+    public static MvcHtmlString BuildKnockoutSortableLink(this HtmlHelper htmlHelper,
+        string fieldName, string actionName, string sortField)
+            {
+                var urlHelper = new UrlHelper(htmlHelper.ViewContext.RequestContext);
+                return new MvcHtmlString(string.Format(
+                "<a href=\"{0}\" data-bind=\"click: pagingService.sortEntitiesBy\"" +
+                " data-sort-field=\"{1}\">{2} " +
+                "<span data-bind=\"css: pagingService.buildSortIcon('{1}')\"></span></a>",
+                urlHelper.Action(actionName),
+                sortField,
+                fieldName));
+            }
+
+    public static HtmlString BuildKnockoutNextPreviousLinks(
+this HtmlHelper htmlHelper, string actionName)
+    {
+        var urlHelper = new UrlHelper(htmlHelper.ViewContext.RequestContext);
+        string result = string.Format(
+        "<nav>" +
+        " <ul class=\"pager\">" +
+        " <li data-bind=\"css: pagingService.buildPreviousClass()\"> " +
+        "<a href=\"{0}\" data-bind=\"click: pagingService.previousPage\">Previous</a>" +
+        "</ li > " +
+        " <li data-bind=\"css: pagingService.buildNextClass()\"> " +
+        "<a href=\"{0}\" data-bind=\"click: pagingService.nextPage\">Next</a>" +
+        "</ li > " +
+        " </ul>" +
+        "</nav>",
+        @urlHelper.Action(actionName));
+
+        return new MvcHtmlString(result);
     }
 }
