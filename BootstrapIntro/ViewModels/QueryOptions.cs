@@ -1,4 +1,6 @@
 ﻿using BootstrapIntro.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +24,11 @@ namespace BootstrapIntro.ViewModels
         public int PageSize { get; set; }
 
         public string SortField { get; set; }
+
+        //http://stackoverflow.com/questions/2441290/json-serialization-of-enum-as-string
+        [JsonConverter(typeof(StringEnumConverter))]
         public SortOrder SortOrder { get; set; }
+        
         public string Sort
         {
             get

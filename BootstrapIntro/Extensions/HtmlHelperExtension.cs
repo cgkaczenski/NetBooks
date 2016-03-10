@@ -133,8 +133,8 @@ public static class HtmlHelperExtensions
                 fieldName));
             }
 
-    public static HtmlString BuildKnockoutNextPreviousLinks(
-this HtmlHelper htmlHelper, string actionName)
+    public static HtmlString BuildKnockoutNextPreviousLinks(this HtmlHelper htmlHelper,
+                string actionName)
     {
         var urlHelper = new UrlHelper(htmlHelper.ViewContext.RequestContext);
         string result = string.Format(

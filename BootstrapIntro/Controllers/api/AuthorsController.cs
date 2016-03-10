@@ -41,6 +41,35 @@ namespace BootstrapIntro.Controllers.api
             };
         }
 
+        // PUT: api/Authors/5
+        [ResponseType(typeof(void))]
+        public IHttpActionResult Put(AuthorViewModel author)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            AutoMapper.Mapper.CreateMap<AuthorViewModel, Author>();
+            db.Entry(AutoMapper.Mapper.Map<AuthorViewModel, Author>(author)).State
+            = EntityState.Modified;
+            db.SaveChanges();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // POST: api/Authors
+        [ResponseType(typeof(AuthorViewModel))]
+        public IHttpActionResult Post(AuthorViewModel author)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            AutoMapper.Mapper.CreateMap<AuthorViewModel, Author>();
+            db.Authors.Add(AutoMapper.Mapper.Map<AuthorViewModel, Author>(author));
+            db.SaveChanges();
+            return CreatedAtRoute("DefaultApi", new { id = author.Id }, author);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

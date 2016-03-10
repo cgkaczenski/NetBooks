@@ -23,16 +23,15 @@
 
     self.updateResultList(resultList);
 
-    
-
     self.sortEntitiesBy = function (data, event) {
         var sortField = $(event.target).data('sortField');
 
-        if (sortField == self.queryOptions.sortField() &&
-             self.queryOptions.sortOrder() == "ASC")
+        if (sortField == self.queryOptions.sortField() && self.queryOptions.sortOrder() == "ASC") {
             self.queryOptions.sortOrder("DESC");
-        else
+        }
+        else {
             self.queryOptions.sortOrder("ASC");
+        }
         self.queryOptions.sortField(sortField);
         self.queryOptions.currentPage(1);
         self.fetchEntities(event);
@@ -53,6 +52,7 @@
     };
 
     self.fetchEntities = function (event) {
+        
         var url = '/api/' + $(event.target).attr('href');
         url += "?sortField=" + self.queryOptions.sortField();
         url += "&sortOrder=" + self.queryOptions.sortOrder();
