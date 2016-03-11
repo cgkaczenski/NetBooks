@@ -162,6 +162,10 @@
     <Compile Include="DAL\BookContext.cs" />
     <Compile Include="DAL\BookInitializer.cs" />
     <Compile Include="Extensions\HtmlHelperExtension.cs" />
+    <Compile Include="Filters\GenerateResultListFilterAttribute.cs" />
+    <Compile Include="Filters\OnApiExceptionAttribute.cs" />
+    <Compile Include="Filters\OnExceptionAttribute.cs" />
+    <Compile Include="Filters\ValidationActionFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -171,6 +175,7 @@
     <Compile Include="ViewModels\Person.cs" />
     <Compile Include="ViewModels\QueryOptions.cs" />
     <Compile Include="ViewModels\ResultList.cs" />
+    <Compile Include="ViewModels\ReturnData.cs" />
     <Compile Include="ViewModels\SortOrder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

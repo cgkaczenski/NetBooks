@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using BootstrapIntro.Filters;
+using System.Web;
 using System.Web.Mvc;
 
 namespace BootstrapIntro
@@ -8,6 +9,7 @@ namespace BootstrapIntro
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new OnExceptionAttribute());
         }
     }
 }

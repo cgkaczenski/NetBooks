@@ -33,12 +33,26 @@ namespace BootstrapIntro.Controllers.api
 
             AutoMapper.Mapper.CreateMap<Author, AuthorViewModel>();
 
-            return new ResultList<AuthorViewModel>
+            return new ResultList<AuthorViewModel>(
+                AutoMapper.Mapper.Map<List<Author>, List<AuthorViewModel>>
+                    (authors.ToList()), queryOptions);
+        }
+
+        // GET: api/Authors/5
+        [ResponseType(typeof(AuthorViewModel))]
+        public IHttpActionResult Get(int id)
+        {
+            Author author = db.Authors.Find(id);
+
+            if (author == null)
             {
-                QueryOptions = queryOptions,
-                Results = AutoMapper.Mapper.Map<List<Author>, List<AuthorViewModel>>
-                    (authors.ToList())
-            };
+                throw new System.Data.Entity.Core.ObjectNotFoundException
+                (string.Format("Unable to find author with id {0}", id));
+            }
+
+            AutoMapper.Mapper.CreateMap<Author, AuthorViewModel>();
+
+            return Ok(AutoMapper.Mapper.Map<Author, AuthorViewModel>(author));
         }
 
         // PUT: api/Authors/5

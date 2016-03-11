@@ -11,6 +11,7 @@ using BootstrapIntro.DAL;
 using BootstrapIntro.Models;
 using BootstrapIntro.ViewModels;
 using System.Web.ModelBinding;
+using BootstrapIntro.Filters;
 
 namespace BootstrapIntro.Controllers
 {
@@ -19,6 +20,7 @@ namespace BootstrapIntro.Controllers
         private BookContext db = new BookContext();
 
         // GET: Authors
+        [GenerateResultListFilterAttribute(typeof(Author), typeof(AuthorViewModel))]
         public ActionResult Index([Form] QueryOptions queryOptions)
         {
             var start = (queryOptions.CurrentPage - 1) * queryOptions.PageSize; 
@@ -31,14 +33,8 @@ namespace BootstrapIntro.Controllers
             queryOptions.TotalPages =
                 (int)Math.Ceiling((double)db.Authors.Count() / queryOptions.PageSize);
 
-            AutoMapper.Mapper.CreateMap<Author, AuthorViewModel>();
-
-            return View(new ResultList<AuthorViewModel>
-            {
-                QueryOptions = queryOptions,
-                Results = AutoMapper.Mapper.Map<List<Author>,
-                                List<AuthorViewModel>>(authors.ToList())
-            });
+            ViewData["QueryOptions"] = queryOptions;
+            return View(authors.ToList());
         }
 
         // GET: Authors/Details/5
@@ -51,7 +47,8 @@ namespace BootstrapIntro.Controllers
             Author author = db.Authors.Find(id);
             if (author == null)
             {
-                return HttpNotFound();
+                throw new System.Data.Entity.Core.ObjectNotFoundException
+                    (string.Format("Unable to find author with id {0}", id));
             }
             return View(author);
         }
