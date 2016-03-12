@@ -24,8 +24,9 @@
 
         // include the anti forgery token
         self.author.__RequestVerificationToken = form[0].value;
+
         $.ajax({
-            url: 'api/authors',
+            url: '/api/authors',
             type: (self.isCreating) ? 'post': 'put',
             contentType: 'application/json',
             data: ko.toJSON(self.author)

@@ -10,6 +10,7 @@ namespace BootstrapIntro
         {
             filters.Add(new HandleErrorAttribute());
             filters.Add(new OnExceptionAttribute());
+            filters.Add(new BasicAuthenticationAttribute());
         }
     }
 }
